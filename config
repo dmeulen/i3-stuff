@@ -176,9 +176,9 @@ bindsym $mod+Pause mode "$mode_system"
 set $jump_window Focus (b) Browser, (m) Mail, (k) Keepassx
 mode "$jump_window" {
   # hardcoded windows
-  bindsym b [class="(?i)firefox"] focus
-  bindsym m [class="(?i)thunderbird"] focus
-  bindsym k [class="(?i)keepassx"] focus
+  bindsym b [class="(?i)firefox"] focus, mode "default"
+  bindsym m [class="(?i)thunderbird"] focus, mode "default"
+  bindsym k [class="(?i)keepassx"] focus, mode "default"
   # back to normal: Enter or Escape
   bindsym Return mode "default"
   bindsym Escape mode "default"

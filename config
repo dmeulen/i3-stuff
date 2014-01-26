@@ -187,6 +187,7 @@ bindsym $mod+n mode "$jump_window"
 
 # Start these at startup
 exec --no-startup-id /usr/bin/compton
+exec --no-startup-id ~/.dropbox-dist/dropboxd
 exec --no-startup-id xsetroot -solid "#000000"
 exec --no-startup-id hsetroot -solid "#000000"
 exec --no-startup-id setxkbmap -layout us -variant altgr-intl -model pc101

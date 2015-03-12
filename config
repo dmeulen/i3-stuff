@@ -22,14 +22,14 @@ set $second_monitor HDMI-0
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
 # font pango:DejaVu Sans Mono 10
-font pango:Ubuntu Regular 10
+font pango:Ubuntu Regular 8
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec xfce4-terminal
+bindsym $mod+Return exec lxterminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -66,10 +66,10 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+#bindsym $mod+h split h
 
 # split in vertical orientation
-bindsym $mod+v split v
+#bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
@@ -173,12 +173,13 @@ mode "$mode_system" {
 bindsym $mod+Pause mode "$mode_system"
 
 # Jump/Focus pre-defined windows
-set $jump_window Focus (b) Browser, (m) Mail, (k) Keepassx
+set $jump_window Focus (b) Browser, (m) Mail, (k) Keepassx, (s) Spotify
 mode "$jump_window" {
   # hardcoded windows
   bindsym b [class="(?i)firefox"] focus, mode "default"
   bindsym m [class="(?i)thunderbird"] focus, mode "default"
   bindsym k [class="(?i)keepassx"] focus, mode "default"
+  bindsym s [class="(?i)spotify"] focus, mode "default"
   # back to normal: Enter or Escape
   bindsym Return mode "default"
   bindsym Escape mode "default"
@@ -187,10 +188,11 @@ bindsym $mod+n mode "$jump_window"
 
 # Start these at startup
 exec --no-startup-id /usr/bin/compton
-exec --no-startup-id ~/.dropbox-dist/dropboxd
+exec --no-startup-id /usr/bin/dropboxd
 exec --no-startup-id xsetroot -solid "#000000"
 exec --no-startup-id hsetroot -solid "#000000"
 exec --no-startup-id setxkbmap -layout us -variant altgr-intl -model pc101
+exec --no-startup-id pulseaudio --start
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -198,7 +200,7 @@ bar {
   output $first_monitor
   tray_output $first_monitor
   status_command i3status
-  font pango:Ubuntu Regular 10
+  font pango:Ubuntu Regular 8
 }
 bar {
   output $second_monitor
@@ -206,7 +208,7 @@ bar {
   status_command i3status
   mode hide
   modifier $mod
-  font pango:Ubuntu Regular 10
+  font pango:Ubuntu Regular 8
 }
 
 # Put workspaces on specific screens
@@ -220,3 +222,9 @@ workspace 6 output $first_monitor
 # Jump back and forth between workspaces ( $mod+number or $mod-z )
 workspace_auto_back_and_forth yes
 bindsym $mod+z workspace back_and_forth
+
+# class                 border  backgr. text    indicator
+#client.focused          #027000 #027000 #000000 #2e9ef4
+#client.focused_inactive #027000 #244A21 #04FB00 #484e50
+#client.unfocused        #027000 #254824 #888888 #292d2e
+#client.urgent           #2f343a #900000 #04FB00 #900000

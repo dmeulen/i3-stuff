@@ -13,13 +13,13 @@ case "$1" in
     ;;
   suspend)
     lock &&
-      dbus-send --system --print-reply --dest=\"org.freedesktop.UPower\" /org/freedesktop/UPower org.freedesktop.UPower.Suspend
+      systemctl suspend
     ;;
   reboot)
-    dbus-send --system --print-reply --dest=\"org.freedesktop.ConsoleKit\" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart
+    systemctl reboot
     ;;
   shutdown)
-    dbus-send --system --print-reply --dest=\"org.freedesktop.ConsoleKit\" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop
+    systemctl halt
     ;;
   *)
     echo "Usage: $0 [lock|logout|suspend|reboot|shutdown]"

@@ -12,7 +12,7 @@
 
 HISTORY=${XDG_CONFIG_HOME:-"$HOME/.config"}/dmenu_run.history
 CACHE=${XDG_CACHE_HOME:-"$HOME/.cache"}/dmenu_run
-DMENU=/usr/bin/dmenu.xft
+DMENU=/usr/bin/dmenu
 
 cmd=$(
         IFS=:

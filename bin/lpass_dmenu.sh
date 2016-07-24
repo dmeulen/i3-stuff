@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # your lastpass username
-user='danny@cb750k6.nl'
+user=$(cat ~/.lpass_username)
 # path to lpass binary
 lpass=/usr/bin/lpass
 # set to 1 if you want to have clipboards cleared

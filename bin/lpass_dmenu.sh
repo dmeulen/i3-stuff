@@ -26,6 +26,7 @@ last_entry=$(cat ~/.cache/i3lpass.last)
 selected_entry=$( ([[ -n ${last_entry} ]] && echo $last_entry; $lpass ls | egrep "[A-Za-z0-9]+\s\[id: [0-9]+\]" | sed -r 's/^(.*) \[id.*\]$/\1/') | dmenu -i)
 
 echo "${selected_entry}" > ~/.cache/i3lpass.last
+
 # clip password to clipboard
 # xargs is not really practical here because of the \ used by lastpass
 $lpass show --clip --password "${selected_entry}"

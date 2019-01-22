@@ -1,7 +1,7 @@
 #!/bin/bash
 
 lock() {
-  i3lock -c 000000 --dpms --image ~/Pictures/wallpaper/fake_desk.png --pointer=win
+  i3lock -c 000000 --screen=0 --blur=0.1 --composite
 }
 
 case "$1" in

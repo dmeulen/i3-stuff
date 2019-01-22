@@ -9,15 +9,21 @@ lpass=/usr/bin/lpass
 clearclipboard=0
 clearclipboardafter=30
 
-login() {
-    if ! $lpass login $user; then
+lpass_login() {
+    if ! $lpass login --trust $user; then
         exit 1
     fi
 }
 
+if [[ $1 == "username" ]]; then
+  lpass_return_value='--username'
+else
+  lpass_return_value='--password'
+fi
+
 # if lpass ls fails, try to log in
 if ! $lpass ls 2> /dev/null; then
-    login
+    lpass_login
 fi
 
 last_entry=$(cat ~/.cache/i3lpass.last)
@@ -29,10 +35,14 @@ echo "${selected_entry}" > ~/.cache/i3lpass.last
 
 # clip password to clipboard
 # xargs is not really practical here because of the \ used by lastpass
-$lpass show --clip --password "${selected_entry}"
+$lpass show --clip ${lpass_return_value} "${selected_entry}"
 
 # copy CLIPBOARD to PRIMARY selection
 xsel -b | xsel -p -i
+
+if [[ $2 == "paste" ]]; then
+  xdotool key Shift+Insert
+fi
 
 # if needed, clear clipboards after defined sleep
 if [[ $clearclipboard -eq 1 ]]; then

@@ -9,7 +9,7 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-set $mod Mod1
+set $mod Mod4
 set $rmod Alt_R
 set $scripts ~/.i3/bin
 set $first_monitor DVI-D-0
@@ -23,7 +23,9 @@ set $second_monitor HDMI-0
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
 # font pango:DejaVu Sans Mono 10
-font pango:Ubuntu Regular 10
+#font pango:Ubuntu Regular 10
+#font -misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1
+font pango:DejaVu Sans Mono 10
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -31,24 +33,35 @@ floating_modifier $mod
 # start a terminal
 #bindsym $mod+Return exec i3-sensible-terminal
 #bindsym $mod+Return exec lxterminal
-bindsym $mod+Return exec terminator
+bindsym $mod+Return exec alacritty
+
+bindsym $mod+F12 exec skippy-xd --toggle-window-picker
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
+bindsym $mod+minus scratchpad show
+bindsym $mod+Shift+minus move scratchpad
+
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id $scripts/dmenu_run -fn "Ubuntu-10:regular"
+bindsym $mod+d exec --no-startup-id $scripts/dmenu_run -fn "Ubuntu-12:regular" -sb "#f47e17" -sf "#000000"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # start lpass
-bindsym $mod+Control+p exec --no-startup-id $scripts/lpass_dmenu.sh
+bindsym $mod+Control+p exec --no-startup-id $scripts/lpass_dmenu.sh password
+bindsym $mod+Control+u exec --no-startup-id $scripts/lpass_dmenu.sh username
+bindsym $mod+Shift+Control+p exec --no-startup-id $scripts/lpass_dmenu.sh password paste
+bindsym $mod+Shift+Control+u exec --no-startup-id $scripts/lpass_dmenu.sh username paste
 
 bindsym $mod+p exec --no-startup-id google-chrome-beta --show-app-list
+
 for_window [instance="chrome_app_list" window_role="bubble"] floating enable
 for_window [title="i3 lastpass"] floating enable
+for_window [class="Blueman-manager" instance="blueman-manager"] floating enable
+for_window [class="mpv"] floating enable
 
 # change focus
 bindsym $mod+j focus left
@@ -128,15 +141,17 @@ bindsym $mod+Shift+0 move container to workspace 10
 
 # rofi window switcher
 bindsym $mod+Tab exec "rofi -show window"
+#bindsym $mod+Tab exec "skippy-xd"
 
 # audio volume
 bindsym $mod+Control+Prior exec "amixer -D pulse sset Master '3%+'"
 bindsym $mod+Control+Next exec "amixer -D pulse sset Master '1%-'"
 
 # control spotify
-bindsym $rmod+Shift+n exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
-bindsym $rmod+Shift+p exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
-bindsym $rmod+Shift+t exec "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
+bindsym XF86AudioNext exec /usr/bin/playerctl next
+bindsym XF86AudioPrev exec /usr/bin/playerctl previous
+bindsym XF86AudioPlay exec /usr/bin/playerctl play-pause
+bindsym XF86AudioPause exec /usr/bin/playerctl play-pause
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -175,7 +190,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # lock, logout, suspend etc.
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+set $mode_system System (l) lock, (e) logout, (s) suspend, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
   bindsym l exec --no-startup-id $scripts/i3-exit.sh lock, mode "default"
   bindsym e exec --no-startup-id $scripts/i3-exit.sh logout, mode "default"
@@ -207,23 +222,27 @@ bindsym button10 mode "$jump_window"
 bindsym button2 kill
 
 # Start these at startup
-exec --no-startup-id /usr/bin/compton
-exec --no-startup-id /usr/bin/dropboxd
-exec --no-startup-id xsetroot -solid "#000000"
-exec --no-startup-id hsetroot -solid "#000000"
-exec --no-startup-id setxkbmap -layout us -variant altgr-intl -model pc101
+exec --no-startup-id /home/dmeulen/.i3/bin/focus-last.py
+exec --no-startup-id /usr/bin/xmodmap ~/.Xmodmap
+exec --no-startup-id /usr/bin/compton --backend glx --vsync opengl-swc --glx-no-stencil --paint-on-overlay -cCGf
+#exec --no-startup-id /usr/bin/compton -b --unredir-if-possible --glx-swap-method -1 --backend xr_glx_hybrid --vsync drm --glx-no-stencil --paint-on-overlay -cCGf
+#exec --no-startup-id xsetroot -solid "#000000"
+#exec --no-startup-id hsetroot -solid "#000000"
+exec --no-startup-id variety
+exec --no-startup-id setxkbmap -layout us -variant altgr-intl -model pc101 -option caps:escape
 exec --no-startup-id /usr/bin/autocutsel -selection CLIPBOARD -fork
 exec --no-startup-id /usr/bin/autocutsel -selection PRIMARY -fork
-exec --no-startup-id pulseaudio --start
-exec --no-startup-id dunst
-exec --no-startup-id redshift-gtk
+exec --no-startup-id /usr/bin/twmnd
 exec --no-startup-id ~/.i3/bin/disable-standby-fs.py
+exec --no-startup-id skippy-xd --start-daemon
+exec --no-startup-id blueman-applet
+exec --no-startup-id xbindkeys
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
   colors {
-      focused_workspace  #4E9A06 #4E9A06 #161616
+      focused_workspace  #f47e17 #f47e17 #161616
   }
   output $first_monitor
   tray_output $first_monitor
@@ -234,14 +253,14 @@ bar {
 }
 bar {
   colors {
-      focused_workspace  #4E9A06 #4E9A06 #161616
+      focused_workspace  #f47e17 #f47e17 #161616
   }
   output $second_monitor
-  tray_output none
+  tray_output $second_monitor
   status_command python ~/.i3/i3py-monitor1.py
-  mode hide
+  #mode hide
   modifier $mod
-  font pango:Ubuntu Regular 8
+  font pango:Ubuntu Regular 10
 }
 
 # Put workspaces on specific screens
@@ -260,4 +279,5 @@ workspace_auto_back_and_forth yes
 bindsym $mod+z workspace back_and_forth
 
 # class                 border  backgr. text    indicator
-client.focused 					#4E9A06 #4E9A06 #161616 #2e9ef4
+client.focused 					#bc5500  #bc5500 #161616 #2e9ef4
+#client.focused 					#4E9A06 #4E9A06 #161616 #2e9ef4

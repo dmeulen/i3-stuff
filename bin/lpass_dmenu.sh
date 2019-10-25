@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # your lastpass username
 user=$(cat ~/.lpass_username)

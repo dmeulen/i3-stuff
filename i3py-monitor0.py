@@ -32,6 +32,24 @@ status.register(
     }
 )
 
+status.register(
+        'network',
+        interval=5,
+        interface="wlp3s0",
+        format_up='W: {essid}',
+        format_down='_',
+        on_leftclick='networkmanager_dmenu'
+        )
+
+status.register(
+        'network',
+        interval=5,
+        interface="ens9",
+        format_up='E: {v4cidr}',
+        format_down='_',
+        on_leftclick='networkmanager_dmenu'
+        )
+
 status.register("ping")
 
 status.register("spotify")

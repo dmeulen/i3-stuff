@@ -1,7 +1,7 @@
 #!/bin/bash
 
 lock() {
-  i3lock -c 000000 --screen=0 --blur=0.1 --composite
+  /home/dmeulen/.i3/bin/i3locker.sh
 }
 
 case "$1" in
@@ -12,14 +12,13 @@ case "$1" in
     i3-msg exit
     ;;
   suspend)
-    lock &&
-      systemctl suspend
+    sudo /bin/systemctl suspend
     ;;
   reboot)
-    systemctl reboot
+    reboot
     ;;
   shutdown)
-    systemctl halt
+    poweroff
     ;;
   *)
     echo "Usage: $0 [lock|logout|suspend|reboot|shutdown]"
